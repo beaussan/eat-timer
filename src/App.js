@@ -3,7 +3,7 @@ import './styles.css';
 import { useTimer } from 'react-timer-hook';
 import { addSeconds } from 'date-fns/fp';
 import useSound from 'use-sound';
-import eatSound from './bongo.wav';
+import eatSound from './eat.mp3';
 import Confetti from 'react-dom-confetti';
 
 const SECONDS_TO_EAT = 5;

@@ -53,7 +53,7 @@ function MyTimer({ expiryTimestamp, interval }) {
       <Confetti active={!isRunning && alreadyStartedOnce} config={config} />
       {isRunning && (
         <div style={{ fontSize: '100px' }}>
-          <span>{interval}</span>
+          <span/>
         </div>
       )}
 

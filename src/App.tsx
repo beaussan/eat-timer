@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import './styles.css';
+// We need to import it staticaly because the dynamic import dosn't work for some reason
+// And I don't have time to debug it anyway
+import 'howler';
 import { useTimer } from 'react-timer-hook';
 import { addSeconds } from 'date-fns/fp';
 import useSound from 'use-sound';
 import eatSound from './eat.mp3';
-import Confetti from 'react-dom-confetti';
+import Confetti, { ConfettiConfig } from 'react-dom-confetti';
 import { useLocalStorage } from './useLocalStorage';
 
-const config = {
+const config: ConfettiConfig = {
   angle: 90,
   spread: 360,
   startVelocity: 40,
   elementCount: 70,
   dragFriction: 0.12,
   duration: 3000,
-  stagger: '2',
+  stagger: 2,
   width: '10px',
   height: '10px',
-  perspective: '500px',
-  colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a']
+  colors: ['#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a'],
 };
 
 function MyTimer({ expiryTimestamp, interval }) {
@@ -26,7 +28,8 @@ function MyTimer({ expiryTimestamp, interval }) {
   const [playSond] = useSound(eatSound, { volume: 1 });
   const [alreadyStartedOnce, setAlreadyStartedOnce] = useState(false);
   const { seconds, isRunning, restart } = useTimer({
-    expiryTimestamp
+    expiryTimestamp,
+    autoStart: false,
   });
 
   useEffect(() => {
@@ -71,9 +74,9 @@ function MyTimer({ expiryTimestamp, interval }) {
 }
 
 export default function App() {
-  const [state, setState] = useState(undefined);
+  const [state, setState] = useState<undefined | number>(undefined);
   const [itm, setItm] = useState(0);
-  const [oldItems, setOldItems] = useLocalStorage('oldEntries', []);
+  const [oldItems, setOldItems] = useLocalStorage<number[]>('oldEntries', []);
   const setUserValue = (val) => {
     if (val <= 0) {
       return;
@@ -88,7 +91,7 @@ export default function App() {
     setOldItems(newOld);
     setState(val);
   };
-  const initTime = new Date();
+  const initTime =  new Date();
   return (
     <div className="w-screen h-screen overflow-hidden bg-black text-white flex items-center justify-center">
       {state ? (
@@ -103,7 +106,7 @@ export default function App() {
               className="px-3 text-black rounded-lg w-20 mr-5"
             />
             <button
-              className="text-black bg-blue-300 text-blue-800 rounded-lg py-2 px-4"
+              className="bg-blue-300 text-blue-800 rounded-lg py-2 px-4"
               onClick={() => {
                 setUserValue(itm);
               }}
